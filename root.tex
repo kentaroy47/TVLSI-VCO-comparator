@@ -67,6 +67,27 @@ On the other hand, lowering the comparator noise is more challenging. Since the 
 
 
 \section{Conventional low-power high-resolution comparators}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/fig1_r1.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.4\textwidth]{figs/fig2.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.4\textwidth]{figs/conventional-strongarm.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
 
 Fig.1 (a) shows a typical comparator \cite{miyahara2008low} used in low-power SAR ADCs. Although noise can be reduced by limiting the bandwidth of the preamp stage, a typical design has input referred noise (IRN) of 10b resolution. Fig.1(b) shows a comparator used in 14b SAR ADC \cite{hesener200714b}. The comparator IRN is reduced by increasing the preamp stages before the latch. However, during the successive approximation (SA) conversion, D*vin* differs each cycle(図）. Moreover, D*vin* < 1 LSB only occurs once, which is the situation when comparator noise requirement is most strict. In other words, the comparator noise requirement is relaxed at other cycles and using a low-noise comparator for all of the cycles is inefficient. 
 
@@ -88,6 +109,21 @@ However, it is challenging for the comparator to detect the value of D*vin* leve
 
 \section{Concept of VCO Comparators}
 \subsection{VCO Comparator Fundamentals}
+\begin{figure*}[ht!]
+\centering
+ \includegraphics[width=0.9\textwidth]{figs/full.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure*}
+
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/fig4.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
 我々は入力電圧差に応じノイズモードを自動的に切り替えるVCOベース比較器を提案する\cite{yoshioka201413b}。VCO比較器は入力電圧差に応じたノイズレベルで動作し消費電力もスケールする。そのためVCO比較器のSAR動作中の電力は：（式）
 
 となり2つのノイズモード切り替えを行うDDNR比較器と比べ比較器電力を半分に削減することができる。
@@ -98,12 +134,19 @@ Fig.4 shows the VCO comparator operation in the case of large and small D*vin*, 
 
 Next, the comparator operation with small D*vin* (Cycle 2 in Fig.4) is explained. Similarly, *ACT* rise and the pulses transmit through the VCOs. Fig.4(a) and (b) plot the VCO outputs of 50-times noise simulation with D*vin* of 4 and 1 LSB respectively. Note that in (b), an “eye” is not opened because jitter is larger than the input signal dependent time deference. In such conditions, the comparator cannot make a correct decision and noise reduction operation is required.
 
-In this circuit, event of small D*vin* is easily detected by effectively utilizing the “dead zone” of the phase detector designed with standard logic D-FF cell. In this work, the dead zone for typical condition is 9 ps. The effect of PVT will be discussed later. If the time difference of pulses is small and within the dead zone, the phase detector does not generate any output signal. Interestingly, since the VCOs are “enabled” during these events, the pulses of the second oscillation cycle are then transmitted. The same procedures continue until the pulse time difference is large enough to exceed the dead zone. In Fig.4, the TA output pulse exceeds the dead zone after 3 oscillations and comparison results are obtained and *ACT* sets down. Fig.4(c) shows the noise simulation of VCO output after 3 oscillations and “eye-opening” is clearly observed. By this eye-opening oscillation, the VCO comparator adaptively reduces noise when vin is small.
+In this circuit, event of small D*vin* is easily detected by effectively utilizing the “dead zone” of the phase detector designed with standard logic D-FF cell. In this work, the dead zone for typical condition is 9 ps. The effect of PVT will be discussed later. If the time difference of pulses is small and within the dead zone, the phase detector does not generate any output signal. Interestingly, since the VCOs are “enabled” during these events, the pulses of the second oscillation cycle are then transmitted. The same procedures continue until the pulse time difference is large enough to exceed the dead zone. In Fig.4, the TA output pulse exceeds the dead zone after 3 oscillations and comparison results are obtained and *ACT* sets down. Fig.4(c) shows the noise simulation of VCO output after 3 oscillations and “eye-opening” is clearly observed. By this eye-opening oscillation, the VCO comparator adaptively reduces noise when vin is small.
 
 \subsection{Noise Analysis of VCO Comparators}
-Further analysis of the eye-opening oscillation is given in the following. In Fig.5, the simulated the eye-opening oscillation is given. In Fig.5, the simulated oscillation countstimes (N) versus pulse difference is plotted for vin of 10.5, 12, and 24 LSB respectively. We can observe that oscillation times and pulse difference has a linear relationship of N and  is decided by vin. On the other hand, the accumulated jitter is in proportion to square root of 発振時間 or √N\cite{hajimiri1999jitter}\cite{abidi2006phase}. In the case of vin is 1 0.5 LSB, even though the jitter may be dominant at 1-3 times of oscillation, the signal dependent pulse difference will become dominant as the number of oscillation increase. The area in gray indicates the dead zone and as long as the pulse difference is under that value, oscillation will continue. Therefore, for vin=0.5, 1, and 21, 2, and 4 LSB, we can guarantee accurate comparison results. However, to prevent meta-stability when vin<0.25 LSB, the maximum oscillation N is was set to 8 in this design.
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/fig5.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+Further analysis of the eye-opening oscillation is given in the following. In Fig.5, the simulated the eye-opening oscillation is given. In Fig.5, the simulated oscillation count times (N) versus pulse difference is plotted for dvin of 10.5, 12, and 24 LSB respectively. We can observe that oscillation times and pulse difference has a linear relationship of sqrtN and ?? is decided by dvin. On the other hand, the accumulated jitter is in proportion to square root of 発振時間 or sqrt(N) \cite{hajimiri1999jitter,abidi2006phase}. In the case of dvin is 1 0.5 LSB, even though the jitter may be dominant at 1-3 times of oscillation, the signal dependent pulse difference will become dominant as the number of oscillation increase. The area in gray indicates the dead zone and as long as the pulse difference is under that value, oscillation will continue. Therefore, for dvin=0.5, 1, and 21, 2, and 4 LSB, we can guarantee accurate comparison results. However, to prevent meta-stability when dvin<0.25 LSB, the maximum oscillation N is was set to 8 in this design.
 
-VCO比較器のノイズはref.\cite{luo2020input}で詳しく議論されているため詳しい導出は行わないが今後の議論に関わるVCO比較器のノイズを決定する重要なデザインパラメータ(インバータステージ数、⊿t、テールトランジスタW/L)について明確化する。VCO比較器の基本的なノイズ特性はノイズ源を白色雑音と仮定するとリング発振器VCOと同等であり[Hajimiri]の解析結果をそのまま活用できる。VCO比較器ではリング発振器のショートタームジッタが比較器ノイズとして現れる。そのためIRNは[Hajimiri]で解析されている通りリングのインバータ数のsquare rootに反比例する。また比較は時間差がデットダイム（デルタt）を超えるまでは発振動作が繰り返されるため、IRNは同様にデルタtにも反比例する。
+VCO比較器のノイズはref.\cite{luo2020input}で詳しく議論されているため詳しい導出は行わないが今後の議論に関わるVCO比較器のノイズを決定する重要なデザインパラメータ(インバータステージ数、dt、テールトランジスタW/L)について明確化する。VCO比較器の基本的なノイズ特性はノイズ源を白色雑音と仮定するとリング発振器VCOと同等でありref.\cite{hajimiri1999jitter}の解析結果をそのまま活用できる。VCO比較器ではリング発振器のショートタームジッタが比較器ノイズとして現れる。そのためIRNは\cite{hajimiri1999jitter}で解析されている通りリングのインバータ数のsquare rootに反比例する。また比較は時間差がデットダイム（デルタt）を超えるまでは発振動作が繰り返されるため、IRNは同様にデルタtにも反比例する。
 
 リングVCOのジッタと異なるのはVCO発振器は電圧から時間への変換器も兼ねている点である。そのためkVCOが大きければ大きいほどジッタに対する耐性（signal dependantの成分）が向上するためIRNは向上。これはテールトランジスタのW/Lによって決定づけられ、IRNは反比例する。
 
@@ -152,12 +195,26 @@ FF条件では1.5倍Effdeadzoneが増加し、Njitterの増加分をキャンセ
 \section{Circuit Implementations}
 \subsection{13-bit SAR ADC implementation}
 
+\begin{figure*}[ht!]
+\centering
+ \includegraphics[width=1\textwidth]{figs/fig7.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure*}
+
 高精度なVCO比較器を実証するため、13bitの低電力SAR ADCを設計する。
 The entire 13b SAR ADC architecture is shown in Fig.7. C-DACの電力をできるだけ低減するため、ref.\cite{liu201012b}と同様の sub-binary C-DAC and perturbation logic for LMS calibrationを用いる. The C-DAC has 2b redundancy and has a sub-binary radix of 213/15=1.82. To suppress the noise of C-DAC buffers, filtering capacitors \cite{miki20154} are provided until 5th bit from MSB. Unit capacitor (C) of 0.5fF was chosen  to meet kT/C noise requirements.
 
 To cancel the capacitor mismatch effect, perturbation based digital calibration \cite{liu201012b} is employed. When the calibration is active, two conversions are resolved for a same sample. The conversions are perturbed with offset of ±Δinjected before the SA cycle starts. The perturbation injecting capacitor is 20C as shown in Fig.7. After the first conversion ends, the perturbation signal is inverted so that it will inject with different polarity. The LMS calibration engine was implemented off-chip.
 
 \subsection{VCO Comparator with multiple noise modes}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/vco-entire-r1.png}
+  \label{highlight}
+\end{figure}
+
 高精度SAR ADCではセトリングなどの影響を緩和するため冗長性込で設計することが多い。
 今回の13-bit SAR ADCもsub-binary radixであり2bitの冗長性をもたせている。
 このようなsub-binary SAR ADCではbit毎に冗長性が割り当てられ、各bitに判定エラーが含まれても後段のfine比較が精微であれば全体として精度劣化は起きない。例えば今回の設計では上位5bitでは200 LSB相当の判定エラーを許容でき、上位ビットにおいてsub-LSB精度を持つVCO comparatorを用いるのはオーバースペック。
@@ -173,10 +230,56 @@ To cancel the capacitor mismatch effect, perturbation based digital calibration 
 MSB,MidではDeadzoneを用いたPhaseDetectorで判定せず、ラッチベースのPhaseDetectorで強制的に判定結果を取得。
 
 \subsection{VCO and Time Amp. designs}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/fig6.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
 
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/ta_chara.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
 
 
 \section{Experiment Results}
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/chipphoto.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/beforecal.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/aftercal.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=0.5\textwidth]{figs/freq-sndr.png}
+  \captionsetup{font=footnotesize}
+  \caption{\textbf{ADC}}
+  \label{highlight}
+\end{figure}
+
 The SAR ADC was fabricated in 65-nm CMOS and Fig.8 shows the chip micrograph and a performance summary. 
 Fig.9 shows a result of 16384-FFT before and after LMS calibration. The two FFT results were lead using the same raw data, but different bit weighting were used: weighting used in schematic and weighting derived via calibration. Therefore, noise situation is exactly the same. Even though no trimming to the comparator was carried out, fine noise performance was achieved. Even with LMS calibration, the SNDR was 66.4 dB, which was lower than expected. One reason for this is the poor IP3 performance of the signal generator which limits the input swing to 0.7Vpp.  The LMS engine requires about 26000 iterations to calibrate the radix and then perturbation injection can be stopped to save power. The power consumption shown in Fig.8 is measured when perturbation injection is off. If the LMS calibration engine was to be implemented on-chip and run background, we expect that the total power consumption will increase three fold.
 Finally, we plotted fs and fin versus SNDR performance in Fig.10. Since the VCO comparator is mostly digital, low voltage operation can be easily accomplished.  Thanks to the 
@@ -187,7 +290,7 @@ low-voltage operation of VCO based comparator, all of the measurements have been
 
 
 \section{Conclusions}
-To automatically reduce comparator noise at small vin conditions, VCO comparator with eye-opening operation was introduced.  Even though the proposed VCO comparator was designed for 13b ADC, this comparator can be used for further resolution improvement by taking care of the jitter performance. Moreover, since this comparator is mainly based on inverters and other simple logic cells, benefits can be granted by process scaling. Furthermore, the characteristics can be surely analyzed using a well-known knowledge of oscillator and logic cells. 
+To automatically reduce comparator noise at small dvin conditions, VCO comparator with eye-opening operation was introduced.  Even though the proposed VCO comparator was designed for 13b ADC, this comparator can be used for further resolution improvement by taking care of the jitter performance. Moreover, since this comparator is mainly based on inverters and other simple logic cells, benefits can be granted by process scaling. Furthermore, the characteristics can be surely analyzed using a well-known knowledge of oscillator and logic cells. 
 
 \bibliographystyle{IEEEbib}
 
