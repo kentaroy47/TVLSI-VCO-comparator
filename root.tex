@@ -122,7 +122,8 @@ However, for $\Delta V_{in}$ = 4 LSB, the required comparator noise performance 
 Thus, the comparison energy can be further reduced if the comparator noise performance can be finely switched reflecting $\Delta V_{in}$ "on-demand".
 
 If the comparator can sense the $\Delta V_{in}$ from its metastable time, on-demand noise control can be achieved by adaptively configuring the number of voting counts.
-However, the metastable time of the voltage domain comparator does not directly correlate with $\Delta V_{in}$, making such implementation difficult. For reference, Fig.\ref{meta} shows the 2-stage comparator's latch response when $\Delta V_{in}$ of 2 LSB and 0.5 LSB are given. Without any noise, the regeneration time is inversely proportional to $\Delta V_{in}$ as shown in red. On the other hand, when noise is present, the latch often opens early due to noise effects; $\Delta V_{in}$ cannot be estimated directly from the regeneration time.
+% add this.
+\textcolor{red}{However, the metastable time of the voltage domain comparator is corrupted by its noise, and precise metastable time cannot be obtained. For reference, Fig.\ref{meta} shows the 2-stage comparator's latch response when $\Delta V_{in}$ of 2 LSB and 0.5 LSB are given. Without any noise, the regeneration time is inversely proportional to $\Delta V_{in}$ as shown in red. On the other hand, when noise is present, the latch may open early due to noise effects; $\Delta V_{in}$ cannot be estimated directly from the regeneration time. The only way to reduce such noise is to improve the noise performance of the comparator, which contradicts from our goal of reducing the comparator noise by voting.}
 
 We propose a VCO-based comparator that can fully adapt its noise performance reflecting the $\Delta V_{in}$ condition. Thus, the ideal VCO-based comparator's power will depend on $\Delta V_{in}$, as shown in Fig.\ref{fig2}(b). The systematic VCO-based comparator power consumption in this case can be calculated as:
 \begin{eqnarray}
@@ -151,7 +152,7 @@ The lower part of Fig.\ref{schema} shows the VCO-based comparator operation in t
 Next, the comparator operation with small $\Delta V_{in}$ (Cycle 2 in Fig.\ref{schema}) is explained. Similarly, $EN$ rise and the pulses transmit through the VCOs. Fig.\ref{schema}(a) and (b) plot the VCO outputs of 50-times transient noise simulation with $\Delta V_{in}$ of 4 and 1 LSB, respectively. Note that in (b), an “eye” is not opened because the VCO jitter is larger than the input-dependent time difference. In such conditions, the comparator cannot make correct decisions and noise reduction is required.
 
 In VCO-based comparators, the event of small $\Delta V_{in}$ is detected by exploiting the deadzone property of the D-FF based PD. It is known that D-FFs require a finite setup and hold time to produce an output: if the input time difference between the data and the clock is too short ($<$9ps in 65nm CMOS), a "deadzone" occur where the output does not respond.
-As in cycle 2 of Fig.\ref{schema}, when the $TA_P$ and $TA_N$ difference is small and within the deadzone, the VCO automatically continues the oscillation (or signal integration) until the time difference is large enough to exceed the deadzone. \textcolor{red}{In Fig.\ref{schema}(c), the TA output exceeds the deadzone after 3 oscillations and “eye-opening” is observed. Such utilization of VCOs and the deadzone allows adaptive configuration of the comparator noise reflecting the $\Delta V_{in}$ level.}
+As in cycle 2 of Fig.\ref{schema}, when the $TA_P$ and $TA_N$ difference is small and within the deadzone, the VCO automatically continues the oscillation (or signal integration) until the time difference is large enough to exceed the deadzone. In Fig.\ref{schema}(c), the TA output exceeds the deadzone after 3 oscillations and “eye-opening” is observed. Such utilization of VCOs and the deadzone allows adaptive configuration of the comparator noise reflecting the $\Delta V_{in}$ level.
 
 
 \begin{figure}[!]
@@ -312,13 +313,13 @@ In our implementation, since multiple latches are used, different offsets will b
   \label{timeamp}
 \end{figure}
 
-\textcolor{red}{Finally, we describe the design of the VCO cell and time amplifier. As shown in Fig.\ref{cell}, the VCO cell achieves voltage-time conversion by binding the NMOS side of the inverter in a current-starving fashion. 
-There is an important power-speed tradeoff in the design of VCO comparators. The PMOS side can also be current-starved to increase the VCO voltage-time conversion gain\cite{shim2017edge}\cite{timecomp}, which will significantly improve the comparator noise performance and ADC power efficiency. However, when the PMOS is also tied, the VCO oscillation frequency drops significantly. In our design, the NMOS+PMOS tied VCO failed to meet our target of 1MS/s SAR ADC operation and such design choice was not taken.}
+Finally, we describe the design of the VCO cell and time amplifier. As shown in Fig.\ref{cell}, the VCO cell achieves voltage-time conversion by binding the NMOS side of the inverter in a current-starving fashion. 
+There is an important power-speed tradeoff in the design of VCO comparators. The PMOS side can also be current-starved to increase the VCO voltage-time conversion gain\cite{shim2017edge}\cite{timecomp}, which will significantly improve the comparator noise performance and ADC power efficiency. However, when the PMOS is also tied, the VCO oscillation frequency drops significantly. In our design, the NMOS+PMOS tied VCO failed to meet our target of 1MS/s SAR ADC operation and such design choice was not taken.
 
 The VCO in this design is designed to oscillate at 600MHz with $V_{DD}$=1.2V and a common-mode voltage of 500mV is given, which is a sufficient speed for 1MS/s SAR ADCs. While the tail NMOS $g_m$ should be maximized to suppress noise, the gate leakage currents contributed to the accuracy degradation in our design. Thus, the L sizing was increased to mitigate this effect. 
 
 Our time amplifier is designed based on ref.\cite{lee20089}, and the schematics and simulated amplification characteristics are shown in Fig.\ref{timeamp}. 
-\textcolor{red}{Although nonlinearity is noticeable, it does not affect the accuracy of the comparator as long as the monotonicity is maintained.}
+Although nonlinearity is noticeable, it does not affect the accuracy of the comparator as long as the monotonicity is maintained.
 Following ref.\cite{lee20089}, $G_{TA}$ is given by:
 \begin{eqnarray}
     \centering
@@ -361,7 +362,7 @@ In this design, the gain at TT condition is designed to be 8 by tuning $T_{off}$
 \begin{figure}[!t]
 \centering
  \includegraphics[width=0.52\textwidth]{figs/breakdown.png}
- \caption{\textcolor{red}{(a) Simulated power breakdown of the ADC. (b) Simulated power breakdown of the VCO comparator}}
+ \caption{(a) Simulated power breakdown of the ADC. (b) Simulated power breakdown of the VCO comparator}
   \label{power}
 \end{figure}
 
@@ -375,16 +376,16 @@ We plot fs and fin versus SNDR respectively in Fig.\ref{freqvssndr}. Since the V
 
 \begin{table*}[!]
 \centering
- \caption{\textcolor{red}{Performance comparison between low-power SAR ADCs.}}
+ \caption{Performance comparison between low-power SAR ADCs.}
  \includegraphics[width=0.9\textwidth]{figs/table.png}
   \label{performancecomp}
 \end{table*}
 
 Finally, we conduct a performance comparison with low-power SAR ADCs in Table \ref{performancecomp}. Our SAR ADC is the first to achieve fully adaptive noise scaling for high-resolution comparators, which opens a new field of research upon further power reduction of the comparator power consumption. 
 
-\textcolor{red}{Innovative VCO comparator designs like edge-pursuit comparator (EPC) \cite{shim2017edge} achieves both higher SNDR and power efficiencies than our design. EPC requires only a single VCO for the comparison and is low-power. However, the VCO must tie both NMOS and PMOS and the VCO oscillation frequency is degraded and the SAR ADC speed is slow (20kS/s).}
+Innovative VCO comparator designs like edge-pursuit comparator (EPC) \cite{shim2017edge} achieves both higher SNDR and power efficiencies than our design. EPC requires only a single VCO for the comparison and is low-power. However, the VCO must tie both NMOS and PMOS and the VCO oscillation frequency is degraded and the SAR ADC speed is slow (20kS/s).
 
-\textcolor{red}{Fig.\ref{power}(a) shows the power breakdown of the ADC, where the VCO comparator is 36\% of the ADC power, balanced with other blocks. A detailed power breakdown of the VCO comparator is also added in Fig.\ref{power}(b) for further reference: the VCO itself dominates with 57\% of the power, while logic power such as time amp and phase detector is small.}
+Fig.\ref{power}(a) shows the power breakdown of the ADC, where the VCO comparator is 36\% of the ADC power, balanced with other blocks. A detailed power breakdown of the VCO comparator is also added in Fig.\ref{power}(b) for further reference: the VCO itself dominates with 57\% of the power, while logic power such as time amp and phase detector is small.
 
 One of the reasons of the worsened FoM (peak of 29fJ/conv.) were the limitations in the measurement environment. Due to the poor IP3 performance of the signal generator, the signal input swing was limited to $0.7V_{pp}$, which occupied only half of the SAR ADC input range. The SNDR was limited to 66.4 dB, but achieving full-scale input should further extend the SNDR around 3-4dB without power overheads. 
 
