@@ -20,6 +20,9 @@ VCO-based Comparator: A Fully Adaptive Noise Scaling Comparator for High-Precisi
 }
 
 \author{Kentaro Yoshioka% <-this % stops a space
+\thanks{Kentaro Yoshioka is with Keio University
+
+        {\tt\small yoshioka@elec.keio.ac.jp}}
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
 %\thanks{
         %{\tt\small yoshioka@elec.keio.ac.jp}}
@@ -123,7 +126,7 @@ Thus, the comparison energy can be further reduced if the comparator noise perfo
 
 If the comparator can sense the $\Delta V_{in}$ from its metastable time, on-demand noise control can be achieved by adaptively configuring the number of voting counts.
 % add this.
-\textcolor{red}{However, the metastable time of the voltage domain comparator is corrupted by its noise, and precise metastable time cannot be obtained. For reference, Fig.\ref{meta} shows the 2-stage comparator's latch response when $\Delta V_{in}$ of 2 LSB and 0.5 LSB are given. Without any noise, the regeneration time is inversely proportional to $\Delta V_{in}$ as shown in red. On the other hand, when noise is present, the latch may open early due to noise effects; $\Delta V_{in}$ cannot be estimated directly from the regeneration time. The only way to reduce such noise is to improve the noise performance of the comparator, which contradicts from our goal of reducing the comparator noise by voting.}
+However, the metastable time of the voltage domain comparator is corrupted by its noise, and precise metastable time cannot be obtained. For reference, Fig.\ref{meta} shows the 2-stage comparator's latch response when $\Delta V_{in}$ of 2 LSB and 0.5 LSB are given. Without any noise, the regeneration time is inversely proportional to $\Delta V_{in}$ as shown in red. On the other hand, when noise is present, the latch may open early due to noise effects; $\Delta V_{in}$ cannot be estimated directly from the regeneration time. The only way to reduce such noise is to improve the noise performance of the comparator, which contradicts from our goal of reducing the comparator noise by voting.
 
 We propose a VCO-based comparator that can fully adapt its noise performance reflecting the $\Delta V_{in}$ condition. Thus, the ideal VCO-based comparator's power will depend on $\Delta V_{in}$, as shown in Fig.\ref{fig2}(b). The systematic VCO-based comparator power consumption in this case can be calculated as:
 \begin{eqnarray}
